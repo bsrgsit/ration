@@ -253,7 +253,7 @@ body {
 
 .detail-panel h2 {
     font-family: var(--font-heading);
-    font-size: 2.5rem;
+    font-size: 2rem;
     margin-bottom: 1rem;
     background: linear-gradient(to right, #fff, #aaa);
     -webkit-background-clip: text;
@@ -510,7 +510,6 @@ body {
 
     .content-area {
         height: calc(100vh - 120px);
-        /* Adjust based on header */
         position: relative;
         overflow: hidden;
     }
@@ -523,11 +522,9 @@ body {
 
     .map-container {
         height: 60%;
-        /* Map takes top 60% */
         width: 100%;
         padding: 1rem;
         align-items: flex-start;
-        /* Align map to top */
     }
 
     #india-map-wrapper svg {
@@ -537,21 +534,19 @@ body {
 
     /* Bottom Sheet Transformation */
     .map-sidebar {
-        position: absolute;
+        position: fixed;
         bottom: 0;
         left: 0;
         width: 100%;
-        height: 85vh;
-        /* Max height when expanded */
+        max-height: 85vh;
         background: linear-gradient(180deg, rgba(40, 40, 40, 0.98), rgba(20, 20, 20, 0.98));
         backdrop-filter: blur(30px);
         -webkit-backdrop-filter: blur(30px);
         border-left: none;
-        border-top: 1px solid var(--accent-copper);
+        border-top: 2px solid var(--accent-copper);
         border-radius: 20px 20px 0 0;
         padding: 1.5rem;
-        transform: translateY(calc(100% - 60px));
-        /* Collapsed state showing just header */
+        transform: translateY(calc(100% - 80px));
         transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         z-index: 1000;
         overflow-y: auto;
@@ -560,6 +555,19 @@ body {
 
     .map-sidebar.open {
         transform: translateY(0);
+    }
+
+    /* Backdrop overlay when sheet is open */
+    .map-sidebar.open::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: -1;
+        pointer-events: all;
     }
 
     /* Drag Handle */
@@ -578,7 +586,6 @@ body {
 
     .intro-card {
         display: none;
-        /* Hide intro on mobile to save space */
     }
 
     /* Ensure detail panel is always visible in sheet */
@@ -588,8 +595,38 @@ body {
     }
 
     .detail-panel h2 {
-        font-size: 1.8rem;
+        font-size: 1.4rem;
         margin-top: 0.5rem;
+    }
+
+    .detail-panel p {
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    /* Close Button for Bottom Sheet */
+    .close-sheet {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid var(--glass-border);
+        color: var(--text-light);
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 1.2rem;
+        transition: all 0.3s;
+        z-index: 10;
+    }
+
+    .close-sheet:hover {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: var(--accent-copper);
     }
 
     /* Hide floating tooltip on mobile */
@@ -600,7 +637,6 @@ body {
     /* Product List Adjustments */
     .product-item {
         flex-direction: row;
-        /* Keep row layout if possible */
         align-items: center;
         padding: 0.8rem;
     }
@@ -613,6 +649,19 @@ body {
 
     .btn-buy-now {
         padding: 0.5rem 0.8rem;
-        font-size: 0.8rem;
+        font-size: 0.75rem;
+    }
+
+    .product-item h4 {
+        font-size: 0.95rem;
+    }
+
+    .product-item small {
+        font-size: 0.75rem;
+    }
+
+    .order-type-select {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.6rem;
     }
 }

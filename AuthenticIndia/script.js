@@ -241,6 +241,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const svgObject = document.querySelector('#india-map-wrapper svg');
         const mapSidebar = document.querySelector('.map-sidebar');
         const mapContainer = document.querySelector('.map-container');
+        const closeSheetBtn = document.querySelector('.close-sheet');
+
+        if (closeSheetBtn) {
+            closeSheetBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                mapSidebar.classList.remove('open');
+            });
+        }
 
         if (!svgObject) {
             console.error("SVG map not found in DOM.");
@@ -280,7 +288,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Close bottom sheet when clicking on map background
         mapContainer.addEventListener('click', (e) => {
-            if (e.target === mapContainer || e.target.id === 'india-map-wrapper') {
+            // Only close if clicking directly on the map container or wrapper, not on SVG paths
+            if (e.target === mapContainer || e.target.id === 'india-map-wrapper' || e.target.tagName === 'svg') {
                 mapSidebar.classList.remove('open');
             }
         });
