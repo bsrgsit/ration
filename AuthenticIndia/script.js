@@ -239,6 +239,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function initMapInteractions() {
         const svgObject = document.querySelector('#india-map-wrapper svg');
+        const mapSidebar = document.querySelector('.map-sidebar');
+        const mapContainer = document.querySelector('.map-container');
 
         if (!svgObject) {
             console.error("SVG map not found in DOM.");
@@ -276,40 +278,62 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+        // Close bottom sheet when clicking on map background
+        mapContainer.addEventListener('click', (e) => {
+            if (e.target === mapContainer || e.target.id === 'india-map-wrapper') {
+                mapSidebar.classList.remove('open');
+            }
+        });
+
         // Add click event listeners to states
         paths.forEach(path => {
-            path.addEventListener('click', function () {
+            path.addEventListener('click', function (e) {
+                e.stopPropagation(); // Prevent map container click
+
                 // Reset active state
-                paths.forEach(p => p.style.fill = ''); // Clear previous inline fills if any
+                paths.forEach(p => p.style.fill = '');
 
                 const stateId = this.getAttribute('id');
-                const stateName = this.getAttribute('name') || stateId; // Fallback
+                const stateName = this.getAttribute('name') || stateId;
+
                 handleStateClick(stateId, stateName);
+
+                // Open Bottom Sheet on Mobile
+                if (window.innerWidth <= 768) {
+                    mapSidebar.classList.add('open');
+                }
             });
 
-            // Hover effect with greeting tooltip
+            // Hover effect with greeting tooltip (Desktop only)
             path.addEventListener('mouseenter', function (e) {
-                this.style.opacity = '0.8';
-                this.style.cursor = 'pointer';
+                // Check if device supports hover to avoid sticky tooltips on touch
+                if (window.matchMedia('(hover: hover)').matches) {
+                    this.style.opacity = '0.8';
+                    this.style.cursor = 'pointer';
 
-                const stateId = this.getAttribute('id');
-                const normalizedId = stateId.toLowerCase();
-                const data = stateData[normalizedId];
+                    const stateId = this.getAttribute('id');
+                    const normalizedId = stateId.toLowerCase();
+                    const data = stateData[normalizedId];
 
-                if (data && data.greeting) {
-                    tooltip.textContent = data.greeting;
-                    tooltip.style.opacity = '1';
+                    if (data && data.greeting) {
+                        tooltip.textContent = data.greeting;
+                        tooltip.style.opacity = '1';
+                    }
                 }
             });
 
             path.addEventListener('mousemove', function (e) {
-                tooltip.style.left = (e.clientX + 15) + 'px';
-                tooltip.style.top = (e.clientY + 15) + 'px';
+                if (window.matchMedia('(hover: hover)').matches) {
+                    tooltip.style.left = (e.clientX + 15) + 'px';
+                    tooltip.style.top = (e.clientY + 15) + 'px';
+                }
             });
 
             path.addEventListener('mouseleave', function () {
-                this.style.opacity = '1';
-                tooltip.style.opacity = '0';
+                if (window.matchMedia('(hover: hover)').matches) {
+                    this.style.opacity = '1';
+                    tooltip.style.opacity = '0';
+                }
             });
         });
     }
@@ -402,4 +426,42 @@ document.addEventListener('DOMContentLoaded', () => {
         // Here you would typically redirect to checkout or open a modal
         console.log('Order placed:', { productName, orderType, price, finalPrice });
     };
+
+    // Sparkle Effect Logic
+    document.addEventListener('click', (e) => {
+        createSparkles(e.clientX, e.clientY);
+    });
+
+    function createSparkles(x, y) {
+        const sparkleCount = 12;
+        for (let i = 0; i < sparkleCount; i++) {
+            const sparkle = document.createElement('div');
+            sparkle.classList.add('sparkle');
+
+            // Randomize direction and distance
+            const angle = Math.random() * Math.PI * 2;
+            const velocity = 30 + Math.random() * 50;
+            const tx = Math.cos(angle) * velocity;
+            const ty = Math.sin(angle) * velocity;
+
+            // Set custom properties for animation
+            sparkle.style.setProperty('--tx', `${tx}px`);
+            sparkle.style.setProperty('--ty', `${ty}px`);
+
+            // Randomize color between Gold and Copper
+            const color = Math.random() > 0.5 ? 'var(--accent-gold)' : 'var(--accent-copper)';
+            sparkle.style.backgroundColor = color;
+            sparkle.style.boxShadow = `0 0 6px ${color}`;
+
+            sparkle.style.left = `${x}px`;
+            sparkle.style.top = `${y}px`;
+
+            document.body.appendChild(sparkle);
+
+            // Cleanup
+            sparkle.addEventListener('animationend', () => {
+                sparkle.remove();
+            });
+        }
+    }
 });

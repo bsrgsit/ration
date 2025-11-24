@@ -3,10 +3,12 @@
     --bg-stone-light: #2a2a2a;
     --accent-copper: #b87333;
     --accent-gold: #d4af37;
-    --text-light: #e0e0e0;
-    --text-muted: #a0a0a0;
-    --glass-bg: rgba(40, 40, 40, 0.6);
-    --glass-border: rgba(255, 255, 255, 0.1);
+    --text-light: #f0f0f0;
+    --text-muted: #b0b0b0;
+    /* Premium Glossy Variables */
+    --glass-bg: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --glass-highlight: rgba(255, 255, 255, 0.05);
     --shadow-stone: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
     --font-heading: 'Playfair Display', serif;
     --font-body: 'Outfit', sans-serif;
@@ -32,10 +34,11 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 1.5rem 5%;
-    background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: linear-gradient(135deg, rgba(40, 40, 40, 0.7), rgba(30, 30, 30, 0.8));
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--glass-border);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -68,7 +71,7 @@ body {
 }
 
 .btn-glass {
-    background: var(--glass-bg);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
     border: 1px solid var(--glass-border);
     color: var(--text-light);
     padding: 0.8rem 1.5rem;
@@ -80,12 +83,14 @@ body {
     backdrop-filter: blur(10px);
     transition: all 0.3s ease;
     font-family: var(--font-body);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .btn-glass:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
     transform: translateY(-2px);
     border-color: var(--accent-copper);
+    box-shadow: 0 5px 15px rgba(184, 115, 51, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .search-bar {
@@ -189,12 +194,13 @@ body {
 /* Map Sidebar */
 .map-sidebar {
     flex: 1;
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: linear-gradient(160deg, rgba(40, 40, 40, 0.8), rgba(20, 20, 20, 0.9));
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     border-left: 1px solid var(--glass-border);
     padding: 3rem 2rem;
     overflow-y: auto;
+    box-shadow: -5px 0 30px rgba(0, 0, 0, 0.3);
 }
 
 .intro-card h2 {
@@ -281,10 +287,10 @@ body {
 }
 
 .product-item:hover {
-    transform: translateX(5px);
-    background: rgba(255, 255, 255, 0.06);
+    transform: translateX(5px) scale(1.01);
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
     border-color: var(--accent-gold);
-    box-shadow: 0 4px 15px rgba(184, 115, 51, 0.2);
+    box-shadow: 0 4px 20px rgba(184, 115, 51, 0.15);
 }
 
 .product-actions {
@@ -375,7 +381,7 @@ body {
 }
 
 .category-card {
-    background: var(--glass-bg);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
     border: 1px solid var(--glass-border);
     border-radius: 16px;
     padding: 2.5rem 2rem;
@@ -384,6 +390,7 @@ body {
     cursor: pointer;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .category-card::before {
@@ -438,49 +445,174 @@ body {
     }
 }
 
+/* Sparkle Effect */
+.sparkle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: var(--accent-gold);
+    pointer-events: none;
+    z-index: 9999;
+    animation: sparkle-anim 0.8s ease-out forwards;
+    box-shadow: 0 0 10px var(--accent-gold), 0 0 20px var(--accent-copper);
+}
+
+@keyframes sparkle-anim {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0);
+        opacity: 0;
+    }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
+    .app-container {
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .main-header {
+        padding: 1rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .logo-text {
+        font-size: 1.4rem;
+    }
+
+    .nav-controls {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .search-bar {
+        flex: 1;
+        margin-left: 0.5rem;
+    }
+
+    .search-bar input {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .btn-glass .text {
+        display: none;
+    }
+
+    .content-area {
+        height: calc(100vh - 120px);
+        /* Adjust based on header */
+        position: relative;
+        overflow: hidden;
+    }
+
     #map-view {
         flex-direction: column;
-        height: auto;
+        height: 100%;
+        position: relative;
     }
 
     .map-container {
-        height: 60vh;
-    }
-
-    .map-sidebar {
+        height: 60%;
+        /* Map takes top 60% */
         width: 100%;
-        border-left: none;
-        border-top: 1px solid var(--glass-border);
+        padding: 1rem;
+        align-items: flex-start;
+        /* Align map to top */
     }
 
     #india-map-wrapper svg {
         max-height: 50vh;
-    }
-
-    .nav-controls {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    .search-bar {
         width: 100%;
     }
 
-    .product-item {
-        flex-direction: column;
-        align-items: flex-start;
+    /* Bottom Sheet Transformation */
+    .map-sidebar {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 85vh;
+        /* Max height when expanded */
+        background: linear-gradient(180deg, rgba(40, 40, 40, 0.98), rgba(20, 20, 20, 0.98));
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+        border-left: none;
+        border-top: 1px solid var(--accent-copper);
+        border-radius: 20px 20px 0 0;
+        padding: 1.5rem;
+        transform: translateY(calc(100% - 60px));
+        /* Collapsed state showing just header */
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 1000;
+        overflow-y: auto;
+        box-shadow: 0 -5px 40px rgba(0, 0, 0, 0.6);
     }
 
-    .product-actions {
-        width: 100%;
-        margin-left: 0;
+    .map-sidebar.open {
+        transform: translateY(0);
+    }
+
+    /* Drag Handle */
+    .map-sidebar::before {
+        content: '';
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 5px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 10px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    .intro-card {
+        display: none;
+        /* Hide intro on mobile to save space */
+    }
+
+    /* Ensure detail panel is always visible in sheet */
+    .detail-panel {
+        display: block !important;
+        opacity: 1 !important;
+    }
+
+    .detail-panel h2 {
+        font-size: 1.8rem;
         margin-top: 0.5rem;
     }
 
-    .order-type-select,
+    /* Hide floating tooltip on mobile */
+    .state-tooltip {
+        display: none !important;
+    }
+
+    /* Product List Adjustments */
+    .product-item {
+        flex-direction: row;
+        /* Keep row layout if possible */
+        align-items: center;
+        padding: 0.8rem;
+    }
+
+    .product-actions {
+        margin-left: auto;
+        width: auto;
+        margin-top: 0;
+    }
+
     .btn-buy-now {
-        width: 100%;
+        padding: 0.5rem 0.8rem;
+        font-size: 0.8rem;
     }
 }
